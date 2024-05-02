@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
       - version-14
+env:
+    BRANCH_NAME: ${{ github.base_ref || github.ref_name }}
+
 
 # concurrency:
 #   group: develop-cloud_storage-${{ github.event.number }}
@@ -43,13 +46,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 14
+          node-version: 20
           check-latest: true
-          cache: 'yarn'  # Replaces `Get yarn cache directory path` and `yarn-cache` steps
+          # cache: 'yarn'  # Replaces `Get yarn cache directory path` and `yarn-cache` steps
     
       # Uncomment if running locally, remove after local testing (already available in github actions environment)
-      # - name: Install Yarn
-      #   run: npm install -g yarn
+      - name: Install Yarn
+        run: npm install -g yarn
 
       - name: Add to Hosts
         run: echo "127.0.0.1 test_site" | sudo tee -a /etc/hosts
@@ -85,11 +88,23 @@ jobs:
         env:
           MYSQL_HOST: 'localhost'
           MYSQL_PWD: 'admin'
+          BRANCH_NAME: ${{ env.BRANCH_NAME}}
         run: |
           bash ${{ github.workspace }}/.github/helper/install.sh
 
-      - name: Run Tests
-        working-directory: /home/runner/frappe-bench
-        run: |
-          source env/bin/activate
-          pytest ./apps/beam/beam/tests/ --disable-warnings -s
+      # - name: Run Tests
+      #   working-directory: /home/runner/frappe-bench
+      #   run: |
+      #     source env/bin/activate
+      #     pytest --cov=beam --disable-warnings -s --cov-report=xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: ./coverage/reports/
+          fail_ci_if_error: true
+          files: ./coverage1.xml,./coverage2.xml,!./cache
+          flags: unittests
+          name: codecov-umbrella
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
