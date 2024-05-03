@@ -128,7 +128,7 @@ jobs:
           script: |
             const fs = require('fs');
             const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/coverage.html/index.html', 'utf8');
-            const comment = `Coverage report:\n\n${coverageReport}\n;
+            const comment = `Coverage report:\n\n${coverageReport}\n`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
