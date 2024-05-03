@@ -100,8 +100,11 @@ jobs:
           pytest --cov=beam --disable-warnings -s
 
       - name: Post coverage report comment
-        working-directory: /home/runner/frappe-bench/apps/beam/htmlcov
+        working-directory: /home/runner/frappe-bench/
         run: |
+          # print current working directory
+          pwd
+          cd apps/beam/htmlcov
           # Read the HTML coverage report
           coverageReport=$(cat index.html)
 
