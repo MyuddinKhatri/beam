@@ -107,9 +107,9 @@ jobs:
           ls
           cd apps/
           ls
-          cd beam
+          cd beam/coverage.html
           # Read the HTML coverage report
-          coverageReport=$(cat coverage.html)
+          coverageReport=$(cat index.html)
 
           # Create a JSON payload with the comment body
           payload=$(jq -n --arg body "$coverageReport" '{"body": $body}')
