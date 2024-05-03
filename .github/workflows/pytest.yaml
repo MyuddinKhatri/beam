@@ -105,7 +105,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/coverage.xml', 'utf8');
+            const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/coverage.html', 'utf8');
             const comment = `Coverage report:\n\`\`\`\n${coverageReport}\n\`\`\``;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
