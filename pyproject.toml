@@ -18,7 +18,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "--cov=beam --cov-report term --cov-report html:coverage.html"
+addopts = "--cov=beam --cov-report term --cov-report html"
 
 [tool.black]
 line-length = 99
