@@ -101,8 +101,8 @@ jobs:
 
       - name: Post coverage report comment
         uses: actions/github-script@v6
-        working-directory: /home/runner/frappe-bench/apps/beam/htmlcov
         with:
+          path: /home/runner/frappe-bench/apps/beam/htmlcov
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
