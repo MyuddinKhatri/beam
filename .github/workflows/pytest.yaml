@@ -104,7 +104,13 @@ jobs:
         run: |
           # print current working directory
           pwd
-          cd apps/beam/htmlcov
+          ls
+          cd apps/
+          ls
+          cd beam/
+          ls
+          cd htmlcov/
+          ls
           # Read the HTML coverage report
           coverageReport=$(cat index.html)
 
