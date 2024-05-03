@@ -124,14 +124,10 @@ jobs:
       - name: Post coverage report comment
         uses: actions/github-script@v6
         with:
-          run: |
-            pwd
-            cd /home/runner/frappe-bench/apps/beam/coverage.html
-
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const coverageReport = fs.readFileSync('index.html', 'utf8');
+            const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/coverage.html/index.html', 'utf8');
             const comment = `Coverage report:\n\`\`\`\n${coverageReport}\n\`\`\``;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
