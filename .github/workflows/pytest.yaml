@@ -99,43 +99,46 @@ jobs:
           cd apps/beam
           pytest --cov=beam --disable-warnings -s
 
-      - name: Post coverage report comment
-        working-directory: /home/runner/frappe-bench/
-        run: |
-          # print current working directory
-          pwd
-          ls
-          cd apps/
-          ls
-          cd beam/coverage.html
-          # Read the HTML coverage report
-          coverageReport=$(cat index.html)
-
-          # Create a JSON payload with the comment body
-          payload=$(jq -n --arg body "$coverageReport" '{"body": $body}')
-          # Post the comment using the GitHub API
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -d "$payload" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
-
-
       # - name: Post coverage report comment
-      #   uses: actions/github-script@v6
-      #   with:
-      #     path: /home/runner/frappe-bench/apps/beamhtmlcov
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     script: |
-      #       const fs = require('fs');
-      #       const coverageReport = fs.readFileSync('index.html', 'utf8');
-      #       const comment = `Coverage report:\n\`\`\`\n${coverageReport}\n\`\`\``;
-      #       github.rest.issues.createComment({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: comment
-      #       });
+      #   working-directory: /home/runner/frappe-bench/
+      #   run: |
+      #     # print current working directory
+      #     pwd
+      #     ls
+      #     cd apps/
+      #     ls
+      #     cd beam/coverage.html
+      #     # Read the HTML coverage report
+      #     coverageReport=$(cat index.html)
+
+      #     # Create a JSON payload with the comment body
+      #     payload=$(jq -n --arg body "$coverageReport" '{"body": $body}')
+      #     # Post the comment using the GitHub API
+      #     curl -X POST \
+      #       -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+      #       -H "Accept: application/vnd.github.v3+json" \
+      #       -d "$payload" \
+      #       "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
+
+
+      - name: Post coverage report comment
+        uses: actions/github-script@v6
+        with:
+          run: |
+            pwd
+            cd /home/runner/frappe-bench/apps/beam/coverage.html
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const coverageReport = fs.readFileSync('index.html', 'utf8');
+            const comment = `Coverage report:\n\`\`\`\n${coverageReport}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
 
       # - name: Upload coverage to Codecov
       #   working-directory: /home/runner/frappe-bench
