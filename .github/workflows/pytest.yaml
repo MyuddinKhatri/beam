@@ -101,6 +101,9 @@ jobs:
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
+        run: |
+          cd /home/runner/frappe-bench/apps/beam
+          ls
         with:
           pytest-coverage-path: /home/runner/frappe-bench/apps/beam/pytest-coverage.txt
           junitxml-path: /home/runner/frappe-bench/apps/beam/coverage.xml
