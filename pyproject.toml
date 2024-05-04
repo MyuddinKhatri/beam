@@ -9,7 +9,6 @@ readme = "README.md"
 python = "^3.8"
 python-barcode = "0.15.1"
 test_utils = {git = "https://github.com/agritheory/test_utils/", branch = "poetry_build"}
-codecov = "^2.1.13"
 pytest = "^8.2.0"
 pytest-cov = "^5.0.0"
 
