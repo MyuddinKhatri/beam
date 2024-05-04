@@ -97,7 +97,13 @@ jobs:
         run: |
           source env/bin/activate
           cd apps/beam
-          pytest --cov=beam --disable-warnings -s
+          pytest --cov=beam -junitxml=pytest.xml --cov-report=term-missing:skip-covered --disable-warnings -s | tee pytest-coverage.txt
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-coverage-path: ./pytest-coverage.txt
+          junitxml-path: ./pytest.xml
 
       # - name: Post coverage report comment
       #   working-directory: /home/runner/frappe-bench/
