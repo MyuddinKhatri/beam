@@ -97,13 +97,12 @@ jobs:
         run: |
           source env/bin/activate
           cd apps/beam
-          pytest --cov=beam -junitxml=pytest.xml --cov-report=term-missing:skip-covered --disable-warnings -s | tee pytest-coverage.txt
+          pytest --cov=beam -junitxml=coverage.xml --cov-report=term-missing:skip-covered --disable-warnings -s
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
         with:
-          pytest-coverage-path: ./pytest-coverage.txt
-          junitxml-path: ./pytest.xml
+          junitxml-path: ./coverage.xml
 
       # - name: Post coverage report comment
       #   working-directory: /home/runner/frappe-bench/
@@ -127,20 +126,20 @@ jobs:
       #       "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments"
 
 
-      - name: Post coverage report comment
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/htmlcov/index.html', 'utf8');
-            const comment = `Coverage report:\n\n${coverageReport}\n`;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
+      # - name: Post coverage report comment
+      #   uses: actions/github-script@v6
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     script: |
+      #       const fs = require('fs');
+      #       const coverageReport = fs.readFileSync('/home/runner/frappe-bench/apps/beam/htmlcov/index.html', 'utf8');
+      #       const comment = `Coverage report:\n\n${coverageReport}\n`;
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: comment
+      #       });
 
       # - name: Upload coverage to Codecov
       #   working-directory: /home/runner/frappe-bench
