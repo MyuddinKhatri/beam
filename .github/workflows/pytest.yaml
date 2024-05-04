@@ -97,7 +97,7 @@ jobs:
         run: |
           source env/bin/activate
           cd apps/beam
-          pytest --cov=beam --cov-report=xml --cov-report=term-missing:skip-covered --disable-warnings -s | tee pytest-coverage.txt
+          pytest --cov=beam --cov-report=xml --disable-warnings -s | tee pytest-coverage.txt
 
       - name: Pytest coverage comment
         uses: MishaKav/pytest-coverage-comment@main
